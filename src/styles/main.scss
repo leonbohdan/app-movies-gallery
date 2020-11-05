@@ -11,6 +11,7 @@ body {
   display: grid;
   grid-template-columns: 70% 1fr;
   grid-column-gap: 10px;
+  grid-row-gap: 10px;
   min-height: 97vh;
 }
 
@@ -30,7 +31,53 @@ body {
   }
 
   &__item {
-    background-color: red;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex-grow: 1;
+    background-color: $favorites-bgc-color;
+    width: 200px;
+    margin: 0 1rem 1rem;
+    @include border;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+
+  &__image {
+    height: 250px;
+    width: 160px;
+    padding: 5px;
+  }
+
+  &__name {
+    text-align: center;
+  }
+
+  &__year {
+    text-align: center;
+  }
+
+  &__addFavorite {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-image: url(../images/goldStar.svg);
+    height: 30px;
+    width: 30px;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+      filter: invert(27%) sepia(51%) saturate(2878%)
+        hue-rotate(346deg) brightness(104%)
+        contrast(97%);
+    }
   }
 }
 
@@ -42,5 +89,36 @@ body {
     @include heading-center;
   }
 
-  &__list {}
+  &__list {
+    position: relative;
+    list-style: none;
+  }
+
+  &__before {
+    position: absolute;
+    left: 0.5rem;
+    background-image: url(../images/right-arrow.svg);
+    background-repeat: no-repeat;
+    height: 20px;
+    width: 20px;
+  }
+
+  &__item {
+    margin-bottom: 5px;
+  }
+
+  &__after {
+    position: absolute;
+    right: 1rem;
+    background-image: url(../images/cancel.svg);
+    background-repeat: no-repeat;
+    height: 8px;
+    width: 8px;
+    padding: 3px;
+    margin: 4px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
