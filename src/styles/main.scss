@@ -4,4 +4,43 @@
 
 body {
   background: $c-gray;
+  box-sizing: border-box;
+}
+
+.root {
+  display: grid;
+  grid-template-columns: 70% 1fr;
+  grid-column-gap: 10px;
+  min-height: 97vh;
+}
+
+.movies {
+  background-color: $movies-bgc-color;
+  @include border;
+
+  &__heading {
+    @include heading-center;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  &__item {
+    background-color: red;
+  }
+}
+
+.favorite {
+  background-color: $favorites-bgc-color;
+  @include border;
+
+  &__heading {
+    @include heading-center;
+  }
+
+  &__list {}
 }
