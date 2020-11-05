@@ -12,29 +12,41 @@ const moviesItem = root.querySelectorAll('.movies__name');
 const favoriteList = root.querySelector('.favorite__list');
 const favorite = root.querySelector('.movies__addFavorite');
 
-// console.log(favoritMovies);
-
 moviesList.addEventListener('click', (event) => {
   const item = event.target;
-  const moviesItem = item.closest('.movies__item');
-  const moviesName = moviesItem.querySelector('.movies__name');
+  const movieItem = item.closest('.movies__item');
+  const moviesName = movieItem.querySelector('.movies__name');
 
-  if (!item.classList.contains('movies__addFavorite')) {
-    return;
+  if (item.classList.contains('movies__addFavorite')) {
+    if (favoritMovies.includes(moviesName.innerText)) {
+      return;
+    }
+
+    favoritMovies.push(moviesName.innerText);
+
+    favoriteList.insertAdjacentHTML('beforeend', `
+      <li class="favorite__item">
+        <span class="favorite__before"></span>
+        <span class="favorite__after"></span>
+        ${moviesName.innerText}
+      </li>
+    `);
   }
+});
 
-  // if (favoritMovies.includes(moviesName.innerText)) {
-  //   return;
-  // }
+favoriteList.addEventListener('click', (event) => {
+  const item = event.target;
+  const favorite = item.closest('.favorite__item').innerText.trim();
 
-  // favoritMovies = [];
-  favoritMovies.push(moviesName.innerText);
-  initFavoriteMovies(favoritMovies);
+  if (item.matches('.favorite__after')) {
+    const index = favoritMovies.indexOf(favorite);
 
-  console.log(item);
-  console.log(moviesItem);
-  console.log(moviesName.innerText);
-  console.log(favoritMovies);
+    if (index > -1) {
+      favoritMovies.splice(index, 1);
+    }
+
+    item.closest('.favorite__item').remove();
+  }
 });
 
 const getMovies = () => {
@@ -77,7 +89,7 @@ function initMovies(movies) {
   }
 };
 
-// initFavoriteMovies(favoritMovies);
+initFavoriteMovies(favoritMovies);
 
 function initFavoriteMovies(movies) {
   for (const name of movies) {
