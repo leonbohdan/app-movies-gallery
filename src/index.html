@@ -3,11 +3,28 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
+    <meta name="description" content="App-movies-gallery">
+    <meta name="keywords" content="vanillaJS, javascript, html, scss">
+    <title>App Movies gallery</title>
     <link rel="stylesheet" href="./styles/main.scss">
   </head>
   <body>
-    <h1>Hello Mate Academy</h1>
+    <div id="root" class="root">
+      <section class="movies">
+        <h1 class="movies__heading">Movies Gallery</h1>
+
+        <div class="movies__list"></div>
+      </section>
+
+      <section class="favorite">
+        <h1 class="favorite__heading">Favorite List</h1>
+
+        <ul class="favorite__list"></ul>
+      </section>
+
+      <section class="modal"></section>
+    </div>
+
     <script type="text/javascript" src="scripts/main.js"></script>
   </body>
 </html>

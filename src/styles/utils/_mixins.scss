@@ -4,3 +4,13 @@
     #{$_property}: $_toValue;
   }
 }
+
+@mixin heading-center {
+  display: flex;
+  justify-content: center;
+}
+
+@mixin border {
+  border: 1px solid $border-color;
+  border-radius: 5px;
+}
