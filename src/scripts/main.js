@@ -5,18 +5,25 @@ const url = 'https://my-json-server.typicode.com/moviedb-tech/movies/list';
 const moviesFromServer = [];
 const movieFromServer = [];
 const data = JSON.parse(localStorage.getItem('fMovies'));
-let favoritMovies = !data ? [] : data;
+const favoritMovies = !data ? [] : data;
 
 const root = document.getElementById('root');
 const moviesList = root.querySelector('.movies__list');
-const moviesItem = root.querySelectorAll('.movies__name');
 const favoriteList = root.querySelector('.favorite__list');
-const favorite = root.querySelector('.movies__addFavorite');
 const modal = root.querySelector('.modal');
 
-console.log(modal);
+modal.addEventListener('click', (event) => {
+  const item = event.target;
 
-moviesList.addEventListener('click', (event) => {
+  if (!item.classList.contains('modal__close')) {
+    return;
+  }
+  modal.classList.toggle('is-active');
+
+  modal.innerHTML = '';
+});
+
+const f1 = (event) => {
   const item = event.target;
   const movieId = item.closest('.movies__item').id;
 
@@ -26,35 +33,11 @@ moviesList.addEventListener('click', (event) => {
 
   getMovie(movieId);
 
-  // modal.insertAdjacentHTML('beforeend', `
-  //   <div class="modal__left">
-  //     <img class="modal__image movies__image" src=${movieFromServer.img} alt="movie image" />
-  //     <span class="modal__addFavorite" alt="star"></span>
-  //     <div class="modal__year movies__year">2011</div>
-  //     <div class="modal__ganres">
-  //       <div class="modal__ganre">ganre1</div>
-  //       <div class="modal__ganre">ganre2</div>
-  //       <div class="modal__ganre">ganre3</div>
-  //     </div>
-
-  //   </div>
-
-  //   <div class="modal__right">
-  //     <h2 class="modal__name">Name Name</h2>
-  //     <p class="modal__description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error laboriosam reprehenderit obcaecati, eaque quae perferendis ratione quaerat nesciunt qui assumenda corrupti dolores rem sit architecto molestias consequatur eum odio mollitia ipsam. Nemo, dicta assumenda. Non, praesentium! Temporibus deleniti rem excepturi impedit officia id adipisci velit, culpa, consequatur obcaecati, officiis necessitatibus?</p>
-  //     <p class="modal__director">Director: directorName</p>
-  //     <p class="modal__starring">Starring: star1, star2, star3</p>
-  //     <span class="modal__close"></span>
-  //   </div>
-  // `);
-
   modal.classList.toggle('is-active');
+};
 
-  console.log(movieId);
-  console.log(movieFromServer);
-  console.log(item);
-  console.log(modal.classList.contains("is-active"));
-});
+moviesList.addEventListener('click', f1);
+// moviesList.removeEventListener(f1);
 
 moviesList.addEventListener('click', (event) => {
   const item = event.target;
@@ -86,10 +69,18 @@ favoriteList.addEventListener('click', (event) => {
 
   if (item.matches('.favorite__after')) {
     const index = favoritMovies.indexOf(favoriteItem);
+    let dataIndex;
+
+    if (data) {
+      dataIndex = data.indexOf(favoriteItem);
+    }
 
     if (index > -1) {
       favoritMovies.splice(index, 1);
-      localStorage.removeItem('fMovies');
+
+      data.splice(dataIndex, 1);
+
+      localStorage.setItem('fMovies', JSON.stringify(data));
     }
 
     item.closest('.favorite__item').remove();
@@ -117,13 +108,10 @@ const getMovie = (id) => {
       movieFromServer.push(data);
 
       initModal(movieFromServer);
+
+      movieFromServer.pop();
     });
 };
-
-console.log(moviesFromServer);
-// console.log(movieFromServer);
-
-// initMovies(moviesFromServer);
 
 function initMovies(movies) {
   for (const movie of movies) {
@@ -158,7 +146,7 @@ function initModal(movie) {
     let genrs = '';
 
     for (const genr of movie[0].genres) {
-      genrs += `<div class="modal__ganre">${genr}</div>`;
+      genrs += `<div class="modal__genre">${genr}</div>`;
     }
 
     return genrs;
@@ -166,21 +154,33 @@ function initModal(movie) {
 
   const genres = getGenres(movie);
 
-  console.log(genres);
+  const getStars = (movie) => {
+    let strs = '';
+
+    for (const star of movie[0].starring) {
+      strs += `<div class="modal__star">${star}</div>`;
+    }
+
+    return strs;
+  };
+
+  const stars = getStars(movie);
 
   modal.insertAdjacentHTML('beforeend', `
     <div class="modal__left">
-      <img class="modal__image movies__image" src=${movie[0].img} alt="movie image" />
-      <span class="modal__addFavorite" alt="star"></span>
-      <div class="modal__year movies__year">${movie[0].year}</div>
-      <div class="modal__ganres">${genres}</div>
+      <img class="modal__image" src=${movie[0].img} alt="movie image" />
+      <div class="modal__info">
+        <div class="modal__addFavorite" alt="star"> </div>
+        <div class="modal__year">${movie[0].year}</div>
+      </div>
+      <div class="modal__genres">${genres}</div>
     </div>
 
     <div class="modal__right">
-      <h2 class="modal__name">Name Name</h2>
-      <p class="modal__description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error laboriosam reprehenderit obcaecati, eaque quae perferendis ratione quaerat nesciunt qui assumenda corrupti dolores rem sit architecto molestias consequatur eum odio mollitia ipsam. Nemo, dicta assumenda. Non, praesentium! Temporibus deleniti rem excepturi impedit officia id adipisci velit, culpa, consequatur obcaecati, officiis necessitatibus?</p>
-      <p class="modal__director">Director: directorName</p>
-      <p class="modal__starring">Starring: star1, star2, star3</p>
+      <h2 class="modal__name">${movie[0].name}</h2>
+      <p class="modal__description">${movie[0].description}</p>
+      <p class="modal__director">Director: ${movie[0].director}</p>
+      <p class="modal__starring">Starring: ${stars}</p>
       <span class="modal__close"></span>
     </div>
   `);
