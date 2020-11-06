@@ -8,6 +8,7 @@ body {
 }
 
 .root {
+  position: relative;
   display: grid;
   grid-template-columns: 70% 1fr;
   grid-column-gap: 10px;
@@ -121,4 +122,72 @@ body {
       cursor: pointer;
     }
   }
+}
+
+.modal {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 30% 1fr;
+  height: 100%;
+
+  background-color: #fff;
+  @include border;
+  opacity: 0;
+  z-index: -1;
+
+  // &.is-active {
+  //   opacity: 1;
+  //   z-index: 1;
+  // }
+
+  &__left {
+    position: relative;
+    padding: 20px 20px 20px 30px;
+  }
+
+  &__addFavorite {
+    position: absolute;
+    top: 3rem;
+    left: 1rem;
+    background-image: url(../images/goldStar.svg);
+    background-repeat: no-repeat;
+    height: 20px;
+    width: 20px;
+
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+      filter: invert(27%) sepia(51%) saturate(2878%)
+        hue-rotate(346deg) brightness(104%)
+        contrast(97%);
+    }
+  }
+
+  &__right {
+    position: relative;
+    padding: 20px 50px 20px 0;
+  }
+
+  &__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-image: url(../images/close-bold.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 20px;
+    width: 20px;
+    padding: 10px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.is-active {
+  opacity: 1;
+  z-index: 1;
 }
